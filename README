@@ -1,0 +1,20 @@
+open cdxalloc
+=============
+
+This is a work in progress reverse engineering effort of libcederxalloc.a library which is used to manage memory allocated to the cedarx video decoder chip found in Allwinner A10 devices.
+
+This library also aims to help in reverse engineering the cedarx video video decoder chip.
+
+Status
+------
+
+Currently this library is not quality code, there are many things missing. It is the bare minimum required for the sample code from the [allwinner-a10-video] (https://github.com/amery/allwinner-a10-video) repository to work (at least as well as the bundled libcedarxalloc.a).
+
+I have developed and tested this code on an Mele A1000 A10 device running 3.0.31 linux kernel with Debian squeeze as per the [instructions here] (http://rhombus-tech.net/allwinner_a10/hacking_the_mele_a1000/Building_Debian_From_Source_Code_for_Mele/)
+
+Todo
+----
+
+* proper management of memory (rather than just working through the available memory).
+* free/ close down
+* locking to allow for multi-threaded use
