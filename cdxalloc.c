@@ -14,7 +14,7 @@
 #include "cdxalloc.h"
 
 #define cdxalloc_simple_debug 1
-#define cdxalloc_verbose_debug 0
+//#define cdxalloc_verbose_debug 0
 
 int fd;
 
@@ -88,6 +88,7 @@ int cdxalloc_close(void)
 */
 void* cdxalloc_alloc(int size) 
 {
+    printf("cdxalloc_alloc: size: 0x%08x\n",size);
     void *ret;
     ret = mmap(NULL,size,PROT_READ|PROT_WRITE,MAP_SHARED,fd,(int) pos);
     if (ret == MAP_FAILED) {
@@ -97,7 +98,9 @@ void* cdxalloc_alloc(int size)
     cdxalloc_createmapping(ret,pos,size);
     pos = pos + size;
     // align to 4kb boundry
-    pos = pos + 4096 - ((unsigned int)pos % 4096);
+    if ((unsigned int)pos % 4096 != 0) { 
+        pos = pos + 4096 - ((unsigned int)pos % 4096);
+    }
     return ret;
 }
 /*
@@ -160,6 +163,9 @@ void* cdxalloc_allocregs()
 */
 void cdxalloc_createmapping(void *virt,void *phys,int size) 
 {
+    #ifdef cdxalloc_simple_debug
+        printf("cdxalloc_createmapping virt: 0x%08x phys: 0x%08x size: 0x%08x\n",(unsigned int) virt,(unsigned int) phys, size);
+    #endif
     // find first unallocated mapping
     int i;
     for (i=0;i<num_mappings;i++) {
